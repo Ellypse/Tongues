@@ -22,6 +22,24 @@ FillLocalizedClassList(Tclasses, true)
 
 local BlizzLangs = {"Darnassian", "Pandaren","Zandali","Thalassian","Goblin","Gnomish","Taurahe","Forsaken","Dwarvish","Draenei","Demonic", "Shalassian"}
 
+local function isPlayerUsingNativeLanguage()
+	local playerRace = UnitRace("player");
+	return playerRace == BRAC["Human"] and self.Settings.Character.Language == T_Common
+		or playerRace == BRAC["Orc"] and self.Settings.Character.Language == T_Orcish
+		or (playerRace == BRAC["Blood Elf"] or playerRace == "Void Elf") and self.Settings.Character.Language == T_Thalassian
+		or playerRace == BRAC["Night Elf"] and self.Settings.Character.Language == T_Darnassian
+		or (playerRace == BRAC["Draenei"] or playerRace == "Lightforged Draenei") and self.Settings.Character.Language == T_Draenei
+		or (playerRace == BRAC["Tauren"] or playerRace == "High Mountain Tauren") and self.Settings.Character.Language == T_Taurahe
+		or playerRace == BRAC["Dwarf"] and self.Settings.Character.Language == T_Dwarvish
+		or playerRace == BRAC["Undead"] and self.Settings.Character.Language == T_Forsaken
+		or playerRace == BRAC["Gnome"] and self.Settings.Character.Language == T_Gnomish
+		or playerRace == BRAC["Troll"] and self.Settings.Character.Language == T_Troll
+		or playerRace == BRAC["Worgen"] and self.Settings.Character.Language == "Gilnean-CodeSpeak"
+		or playerRace == BRAC["Goblin"] and self.Settings.Character.Language == BRAC["Goblin"]
+		or playerRace == "Nightborne" and self.Settings.Character.Language == "Shalassian"
+		or playerRace == "Pandaran" and self.Settings.Character.Language == "Pandaran"
+end
+
 
 --===============================================MAIN===================================================--
 ---counte number of languages in tongues
@@ -748,20 +766,7 @@ HandleSend = function(self, msg, chatType, langID, language, channel)--HANDLE TE
 
 			-----TRANSLATIONS and PROCESS for PARTY 
 			if     (self.Settings.Character.Screen.Party == true and (chatType == "PARTY" or chatType == "party" or chatType == "PARTY_LEADER")) then
-				if UnitRace("player") == BRAC["Human"] and self.Settings.Character.Language == T_Common
-				or UnitRace("player") == BRAC["Orc"] and self.Settings.Character.Language == T_Orcish
-				or (UnitRace("player") == BRAC["Blood Elf"] or UnitRace == "Void Elf") and self.Settings.Character.Language == T_Thalassian
-				or UnitRace("player") == BRAC["Night Elf"] and self.Settings.Character.Language == T_Darnassian
-				or (UnitRace("player") == BRAC["Draenei"] or UnitRace == "Lightforged Draenei") and self.Settings.Character.Language == T_Draenei	
-				or (UnitRace("player") == BRAC["Tauren"] or UnitRace("player") == "High Mountain Tauren")and self.Settings.Character.Language == T_Taurahe
-				or UnitRace("player") == BRAC["Dwarf"] and self.Settings.Character.Language == T_Dwarvish
-				or UnitRace("player") == BRAC["Undead"] and self.Settings.Character.Language == T_Forsaken
-				or UnitRace("player") == BRAC["Gnome"] and self.Settings.Character.Language == T_Gnomish
-				or UnitRace("player") == BRAC["Troll"] and self.Settings.Character.Language == T_Troll
-				or UnitRace("player") == BRAC["Worgen"] and self.Settings.Character.Language == "Gilnean-CodeSpeak"
-				or UnitRace("player") == BRAC["Goblin"] and self.Settings.Character.Language == BRAC["Goblin"]
-				or UnitRace("player") == "Nightborne" and self.Settings.Character.Language == "Shalassian"
-				or UnitRace("player") == "Pandaran" and self.Settings.Character.Language == "Pandaran" then
+				if isPlayerUsingNativeLanguage() then
 					language = nil
 				end;
 				self.Hooks.Send(msg , chatType, language, channel);
@@ -775,19 +780,7 @@ HandleSend = function(self, msg, chatType, langID, language, channel)--HANDLE TE
 
 			-----TRANSLATIONS and PROCESS for GUILD 
 			if     (self.Settings.Character.Screen.Guild == true and (chatType == "GUILD" or chatType=="guild")) then
-				if UnitRace("player") == BRAC["Human"] and self.Settings.Character.Language == T_Common
-				or UnitRace("player") == BRAC["Orc"] and self.Settings.Character.Language == T_Orcish
-				or UnitRace("player") == BRAC["Blood Elf"] and self.Settings.Character.Language == T_Thalassian
-				or UnitRace("player") == BRAC["Night Elf"] and self.Settings.Character.Language == T_Darnassian
-				or UnitRace("player") == BRAC["Draenei"] and self.Settings.Character.Language == T_Draenei	
-				or UnitRace("player") == BRAC["Tauren"] and self.Settings.Character.Language == T_Taurahe
-				or UnitRace("player") == BRAC["Dwarf"] and self.Settings.Character.Language == T_Dwarvish
-				or UnitRace("player") == BRAC["Undead"] and self.Settings.Character.Language == T_Forsaken
-				or UnitRace("player") == BRAC["Gnome"] and self.Settings.Character.Language == T_Gnomish
-				or UnitRace("player") == BRAC["Troll"] and self.Settings.Character.Language == T_Troll
-				or UnitRace("player") == BRAC["Worgen"] and self.Settings.Character.Language ==  "Gilnean-CodeSpeak"
-				or UnitRace("player") == BRAC["Goblin"] and self.Settings.Character.Language == BRAC["Goblin"]
-				or UnitRace("player") == "Pandaran" and self.Settings.Character.Language == "Pandaran" then
+				if isPlayerUsingNativeLanguage()  then
 					language = nil
 				end;
 				self.Hooks.Send(msg , "GUILD", language, channel);
@@ -800,19 +793,7 @@ HandleSend = function(self, msg, chatType, langID, language, channel)--HANDLE TE
 			end
 			-----TRANSLATIONS and PROCESS for OFFICER
 			if     (self.Settings.Character.Screen.Officer == true and chatType == "OFFICER") then
-					if UnitRace("player") == BRAC["Human"] and self.Settings.Character.Language == T_Common
-				or UnitRace("player") == BRAC["Orc"] and self.Settings.Character.Language == T_Orcish
-				or UnitRace("player") == BRAC["Blood Elf"] and self.Settings.Character.Language == T_Thalassian
-				or UnitRace("player") == BRAC["Night Elf"] and self.Settings.Character.Language == T_Darnassian
-				or UnitRace("player") == BRAC["Draenei"] and self.Settings.Character.Language == T_Draenei	
-				or UnitRace("player") == BRAC["Tauren"] and self.Settings.Character.Language == T_Taurahe
-				or UnitRace("player") == BRAC["Dwarf"] and self.Settings.Character.Language == T_Dwarvish
-				or UnitRace("player") == BRAC["Undead"] and self.Settings.Character.Language == T_Forsaken
-				or UnitRace("player") == BRAC["Gnome"] and self.Settings.Character.Language == T_Gnomish
-				or UnitRace("player") == BRAC["Troll"] and self.Settings.Character.Language == T_Troll
-				or UnitRace("player") == BRAC["Worgen"] and self.Settings.Character.Language ==  "Gilnean-CodeSpeak"
-				or UnitRace("player") == BRAC["Goblin"] and self.Settings.Character.Language == BRAC["Goblin"]
-				or UnitRace("player") == "Pandaran" and self.Settings.Character.Language == "Pandaran" then
+					if isPlayerUsingNativeLanguage() then
 					language = nil
 				end;
 				self.Hooks.Send(msg , "OFFICER", language, channel);
@@ -825,19 +806,7 @@ HandleSend = function(self, msg, chatType, langID, language, channel)--HANDLE TE
 			end
 			-----TRANSLATIONS and PROCESS for RAID
 			if     (self.Settings.Character.Screen.Raid == true and (chatType == "RAID" or chatType == "raid")) then
-				if UnitRace("player") == BRAC["Human"] and self.Settings.Character.Language == T_Common
-				or UnitRace("player") == BRAC["Orc"] and self.Settings.Character.Language == T_Orcish
-				or UnitRace("player") == BRAC["Blood Elf"] and self.Settings.Character.Language == T_Thalassian
-				or UnitRace("player") == BRAC["Night Elf"] and self.Settings.Character.Language == T_Darnassian
-				or UnitRace("player") == BRAC["Draenei"] and self.Settings.Character.Language == T_Draenei	
-				or UnitRace("player") == BRAC["Tauren"] and self.Settings.Character.Language == T_Taurahe
-				or UnitRace("player") == BRAC["Dwarf"] and self.Settings.Character.Language == T_Dwarvish
-				or UnitRace("player") == BRAC["Undead"] and self.Settings.Character.Language == T_Forsaken
-				or UnitRace("player") == BRAC["Gnome"] and self.Settings.Character.Language == T_Gnomish
-				or UnitRace("player") == BRAC["Troll"] and self.Settings.Character.Language == T_Troll
-				or UnitRace("player") == BRAC["Worgen"] and self.Settings.Character.Language ==  "Gilnean-CodeSpeak"
-				or UnitRace("player") == BRAC["Goblin"] and self.Settings.Character.Language == BRAC["Goblin"]
-				or UnitRace("player") == "Pandaran" and self.Settings.Character.Language == "Pandaran" then
+				if isPlayerUsingNativeLanguage() then
 					language = nil
 				end;
 				self.Hooks.Send(msg ,"RAID", language, channel);
@@ -850,19 +819,7 @@ HandleSend = function(self, msg, chatType, langID, language, channel)--HANDLE TE
 			end
 			-----TRANSLATIONS and PROCESS for RAIDALERT
 			if     (self.Settings.Character.Screen.RaidAlert == true and (chatType == "RAID_WARNING" or chatType == "raid_warning")) then
-				if UnitRace("player") == BRAC["Human"] and self.Settings.Character.Language == T_Common
-				or UnitRace("player") == BRAC["Orc"] and self.Settings.Character.Language == T_Orcish
-				or UnitRace("player") == BRAC["Blood Elf"] and self.Settings.Character.Language == T_Thalassian
-				or UnitRace("player") == BRAC["Night Elf"] and self.Settings.Character.Language == T_Darnassian
-				or UnitRace("player") == BRAC["Draenei"] and self.Settings.Character.Language == T_Draenei	
-				or UnitRace("player") == BRAC["Tauren"] and self.Settings.Character.Language == T_Taurahe
-				or UnitRace("player") == BRAC["Dwarf"] and self.Settings.Character.Language == T_Dwarvish
-				or UnitRace("player") == BRAC["Undead"] and self.Settings.Character.Language == T_Forsaken
-				or UnitRace("player") == BRAC["Gnome"] and self.Settings.Character.Language == T_Gnomish
-				or UnitRace("player") == BRAC["Troll"] and self.Settings.Character.Language == T_Troll
-				or UnitRace("player") == BRAC["Worgen"] and self.Settings.Character.Language ==  "Gilnean-CodeSpeak"
-				or UnitRace("player") == BRAC["Goblin"] and self.Settings.Character.Language == BRAC["Goblin"]
-				or UnitRace("player") == "Pandaran" and self.Settings.Character.Language == "Pandaran" then
+				if isPlayerUsingNativeLanguage() then
 					language = nil
 				end;
 				self.Hooks.Send(msg ,"RAID_WARNING", language, channel);
@@ -875,19 +832,7 @@ HandleSend = function(self, msg, chatType, langID, language, channel)--HANDLE TE
 			end
 			-----TRANSLATIONS and PROCESS for BATTLEGROUND
 			if(self.Settings.Character.Screen.Battleground == true and (chatType == "INSTANCE_CHAT" or chatType == "instance_chat")) then
-				if UnitRace("player") == BRAC["Human"] and self.Settings.Character.Language == T_Common
-				or UnitRace("player") == BRAC["Orc"] and self.Settings.Character.Language == T_Orcish
-				or UnitRace("player") == BRAC["Blood Elf"] and self.Settings.Character.Language == T_Thalassian
-				or UnitRace("player") == BRAC["Night Elf"] and self.Settings.Character.Language == T_Darnassian
-				or UnitRace("player") == BRAC["Draenei"] and self.Settings.Character.Language == T_Draenei	
-				or UnitRace("player") == BRAC["Tauren"] and self.Settings.Character.Language == T_Taurahe
-				or UnitRace("player") == BRAC["Dwarf"] and self.Settings.Character.Language == T_Dwarvish
-				or UnitRace("player") == BRAC["Undead"] and self.Settings.Character.Language == T_Forsaken
-				or UnitRace("player") == BRAC["Gnome"] and self.Settings.Character.Language == T_Gnomish
-				or UnitRace("player") == BRAC["Troll"] and self.Settings.Character.Language == T_Troll
-				or UnitRace("player") == BRAC["Worgen"] and self.Settings.Character.Language ==  "Gilnean-CodeSpeak"
-				or UnitRace("player") == BRAC["Goblin"] and self.Settings.Character.Language == BRAC["Goblin"]
-				or UnitRace("player") == "Pandaran" and self.Settings.Character.Language == "Pandaran" then
+				if isPlayerUsingNativeLanguage() then
 					language = nil
 				end;
 				self.Hooks.Send(msg , "INSTANCE_CHAT", language, channel);
