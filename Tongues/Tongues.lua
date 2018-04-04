@@ -16,6 +16,25 @@ local BFAC = LibStub("LibBabble-Faction-3.0"):GetLookupTable()
 local BCT = LibStub("LibBabble-CreatureType-3.0"):GetLookupTable()
 local _,Tclass,_ = UnitClass("player")
 
+local UNLOCALIZED_PLAYER_RACES = {
+	HUMAN = "Human",
+	GNOME = "Gnome",
+	UNDEAD = "Scourge",
+	NIGHT_ELF = "NightElf",
+	DWARF = "Dwarf",
+	DRAENEI = "Draenei",
+	ORC = "Orc",
+	BLOOD_ELF = "BloodElf",
+	TROLL = "Troll",
+	TAUREN = "Tauren",
+	WORGEN = "Worgen",
+	GOBLIN = "Goblin",
+	PANDAREN = "Pandaren",
+	NIGHTBORNE = "Nightborne",
+	LIGHTFORGED_DRAENEI = "LightforgedDraenei",
+	VOID_ELF = "VoidElf",
+	HIGHMOUNTAIN_TAUREN = "HighmountainTauren",
+}
 
 local Tclasses = {}
 FillLocalizedClassList(Tclasses, true)
@@ -444,37 +463,38 @@ end;
 				self.Settings.Character.Filter = "<None>";
 			end;
 
+			-- Use non-localized and non-genderized version of the player race to determine their language
+			local unlocalizedPlayerRace = select(2, UnitRace("player"));
 			if self.Settings.Character.Language == nil then
-				if UnitRace("player") == BRAC["Human"] then
+				if unlocalizedPlayerRace == UNLOCALIZED_PLAYER_RACES.HUMAN then
 					self.Settings.Character.Language = T_Common--T_Common
-				elseif UnitRace("player") ==  BRAC["Orc"] then
+				elseif unlocalizedPlayerRace == UNLOCALIZED_PLAYER_RACES.ORC then
 					self.Settings.Character.Language = T_Orcish--T_Orcish
-				elseif (UnitRace("player") == BRAC["Blood Elf"] or UnitRace("player") == "Void Elf") then 
+				elseif (unlocalizedPlayerRace == UNLOCALIZED_PLAYER_RACES.BLOOD_ELF or unlocalizedPlayerRace == UNLOCALIZED_PLAYER_RACES.VOID_ELF) then
 					self.Settings.Character.Language = T_Thalassian
-				elseif UnitRace("player") == BRAC["Night Elf"] then
+				elseif unlocalizedPlayerRace == UNLOCALIZED_PLAYER_RACES.NIGHT_ELF then
 					self.Settings.Character.Language = T_Darnassian
-				elseif (UnitRace("player") == BRAC["Draenei"] or UnitRace("player") == "Lightforged Draenei") then
+				elseif (unlocalizedPlayerRace == UNLOCALIZED_PLAYER_RACES.DRAENEI or unlocalizedPlayerRace == UNLOCALIZED_PLAYER_RACES.LIGHTFORGED_DRAENEI) then
 					self.Settings.Character.Language = T_Draenei
-				elseif (UnitRace("player") == BRAC["Tauren"] or UnitRace("player") == "High Mountain Tauren") then 
+				elseif (unlocalizedPlayerRace == UNLOCALIZED_PLAYER_RACES.TAUREN or unlocalizedPlayerRace == UNLOCALIZED_PLAYER_RACES.HIGHMOUNTAIN_TAUREN) then
 					self.Settings.Character.Language = T_Taurahe
-				elseif UnitRace("player") == BRAC["Dwarf"] then
+				elseif unlocalizedPlayerRace == UNLOCALIZED_PLAYER_RACES.DWARF then
 					self.Settings.Character.Language = T_Dwarvish
-				elseif UnitRace("player") == BRAC["Undead"] then
+				elseif unlocalizedPlayerRace == UNLOCALIZED_PLAYER_RACES.UNDEAD then
 					self.Settings.Character.Language = T_Forsaken
-				elseif UnitRace("player") == BRAC["Gnome"] then
+				elseif unlocalizedPlayerRace == UNLOCALIZED_PLAYER_RACES.GNOME then
 					self.Settings.Character.Language = T_Gnomish
-				elseif UnitRace("player") == BRAC["Troll"] then
+				elseif unlocalizedPlayerRace == UNLOCALIZED_PLAYER_RACES.TROLL then
 					self.Settings.Character.Language = "Zandali"
 					self.Settings.Character.Language = T_Troll
-				elseif UnitRace("player") == BRAC["Worgen"] then
+				elseif unlocalizedPlayerRace == UNLOCALIZED_PLAYER_RACES.WORGEN then
 					self.Settings.Character.Language = "Gilnean-CodeSpeak"
-				
 					self.Settings.Character.Fluency[BCT["Wolf"]] = Tongues_Character.Fluency[BCT["Wolf"]] or 100
-				elseif UnitRace("player") == BRAC["Goblin"] then
+				elseif unlocalizedPlayerRace == UNLOCALIZED_PLAYER_RACES.GOBLIN then
 					self.Settings.Character.Language = BRAC["Goblin"]
-				elseif UnitRace("player") == "Nightborne" then
+				elseif unlocalizedPlayerRace == UNLOCALIZED_PLAYER_RACES.NIGHTBORNE then
 					self.Settings.Character.Language = "Shalassian"
-				elseif UnitRace("player") == "Pandaren" then
+				elseif unlocalizedPlayerRace == UNLOCALIZED_PLAYER_RACES.PANDAREN then
 					self.Settings.Character.Language = "Pandaren"
 				end;
 				self.Settings.Character.Fluency[self.Settings.Character.Language] = Tongues_Character.Fluency[self.Settings.Character.Language] or 100
